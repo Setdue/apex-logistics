@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import os
+import re
 import secrets
 import shutil
 import sqlite3
@@ -153,8 +154,14 @@ class Store:
                       cash_received_kobo: int | None = None, terminal_reference: str | None = None):
         if tender not in ("cash", "external_terminal") or not cart:
             raise ValueError("Choose sale items and a supported tender type.")
-        if tender == "external_terminal" and not (terminal_reference or "").strip():
-            raise ValueError("Enter the reference shown by the separate payment terminal.")
+        terminal_reference=(terminal_reference or "").strip()
+        if tender == "external_terminal":
+            if not terminal_reference:
+                raise ValueError("Enter the reference shown by the separate payment terminal.")
+            if len(terminal_reference)>64 or not re.fullmatch(r"[A-Za-z0-9._/-]+",terminal_reference):
+                raise ValueError("Use only the short terminal transaction reference; do not enter card or account details.")
+            if re.fullmatch(r"\d{12,19}",terminal_reference):
+                raise ValueError("That looks like a payment card number. Enter the terminal's non-card transaction reference instead.")
         sale_id, receipt_no, created = str(uuid4()), "NS-" + datetime.now().strftime("%Y%m%d-") + secrets.token_hex(3).upper(), utc_now()
         with closing(self.connect()) as db:
             db.execute("BEGIN IMMEDIATE")
@@ -450,3 +457,4 @@ def main():
 
 
 if __name__=="__main__":raise SystemExit(main())
+
