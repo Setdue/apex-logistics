@@ -35,3 +35,8 @@ This is a portfolio prototype, not production accounting software. It has no sig
 ## License
 
 MIT — see `LICENSE`.
+
+
+## Windows single-computer build
+
+This repository also contains an offline Windows desktop build in [desktop/](desktop/README.md). It records stock and sales in a local SQLite database, supports cash checkout and externally confirmed terminal payments, and saves receipt text files. It does not collect card data or verify external terminal payments. Configure your actual inventory and business tax settings before use; see its setup guide and limitations.
