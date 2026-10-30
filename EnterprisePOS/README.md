@@ -40,3 +40,8 @@ MIT — see `LICENSE`.
 ## Windows single-computer build
 
 This repository also contains an offline Windows desktop build in [desktop/](desktop/README.md). It records stock and sales in a local SQLite database, supports cash checkout and externally confirmed terminal payments, and saves receipt text files. It does not collect card data or verify external terminal payments. Configure your actual inventory and business tax settings before use; see its setup guide and limitations.
+
+
+## Native C++ interface preview
+
+A Win32/GDI C++17 interface preview is available under [win32/](win32/README.md), using the same dark native-window style as LoginShield NG. It demonstrates checkout, inventory, and sales-history screens with sample data. It does not save sales or connect to the operating SQLite app. Use the desktop Python build above for persistent local shop records.
